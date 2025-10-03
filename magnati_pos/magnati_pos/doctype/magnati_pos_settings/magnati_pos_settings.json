@@ -1,0 +1,89 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-10-03 16:06:35.915684",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "ecr_web_service_url",
+  "magnati_card_mop",
+  "enabled",
+  "column_break_fftg",
+  "visa_card_type",
+  "master_card_type",
+  "amex_card_type"
+ ],
+ "fields": [
+  {
+   "default": "http://localhost",
+   "fieldname": "ecr_web_service_url",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "ECR Web Service URL",
+   "options": "URL",
+   "reqd": 1
+  },
+  {
+   "fieldname": "magnati_card_mop",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Magnati Card Mode of Payment",
+   "options": "Mode of Payment",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Is Enabled"
+  },
+  {
+   "fieldname": "column_break_fftg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "master_card_type",
+   "fieldtype": "Link",
+   "label": "Master Card Type",
+   "options": "Payment Card Type"
+  },
+  {
+   "fieldname": "visa_card_type",
+   "fieldtype": "Link",
+   "label": "Visa Card Type",
+   "options": "Payment Card Type"
+  },
+  {
+   "fieldname": "amex_card_type",
+   "fieldtype": "Link",
+   "label": "American Express Card Type",
+   "options": "Payment Card Type"
+  }
+ ],
+ "grid_page_length": 500,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2025-10-03 17:07:27.231539",
+ "modified_by": "Administrator",
+ "module": "Magnati POS",
+ "name": "Magnati POS Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
