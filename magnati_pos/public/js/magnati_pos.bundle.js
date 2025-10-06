@@ -118,7 +118,7 @@ $.extend(magnati_pos, {
 		const headers = new Headers();
 		headers.append("Content-Type", "text/xml; charset=utf-8");
 
-		const payload = magnati_pos.get_payload();
+		const payload = magnati_pos.get_payload(terminal_id, document_no, amount);
 
 		const request_options = {
 			method: "POST",
@@ -155,7 +155,7 @@ $.extend(magnati_pos, {
 			let auth_obj = magnati_pos.handle_message(message);
 
 			frappe.show_alert({
-				message: __('POS Payment Successful'),
+				message: __('Magnati POS Payment Successful'),
 				indicator: 'green'
 			});
 
@@ -196,7 +196,7 @@ $.extend(magnati_pos, {
 
 		const auth_obj = magnati_pos.parse_message(message);
 		if (auth_obj["VFI_RespCode"] != "000") {
-			throw new Error(__("POS Payment Failed: {0}", [auth_obj["VFI_RespMess"] || "Unknown Error"]))
+			throw new Error(__("Magnati POS Payment Failed: {0}", [auth_obj["VFI_RespMess"] || "Unknown Error"]))
 		}
 
 		auth_obj.amount = flt(flt(auth_obj["VFI_Amount"]) / 100, 2);
@@ -245,7 +245,7 @@ $.extend(magnati_pos, {
 
 	get_ecr_web_service_url() {
 		const base_url = new URL(frappe.boot.ecr_web_service_url || 'http://localhost/');
-		let path = "ECRWebService/ECRWebService/ECRWebService.asmx";
+		let path = "ECRWebService/ECRWebService.asmx";
 		let full_url = new URL(path, base_url);
 		return full_url.href;
 	},
