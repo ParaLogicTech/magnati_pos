@@ -12,8 +12,8 @@ app_include_js = "magnati_pos.bundle.js"
 boot_session = "magnati_pos.boot.boot_session"
 
 doctype_js = {
-	"Payment Entry": "overrides/payment_entry.js",
-	"Sales Invoice": "overrides/sales_invoice.js",
+	"Payment Entry": "overrides/payment_entry_hooks.js",
+	"Sales Invoice": "overrides/sales_invoice_hooks.js",
 }
 
 standard_navbar_items = [
