@@ -220,7 +220,10 @@ $.extend(magnati_pos, {
 		}
 
 		auth_obj.amount = flt(flt(auth_obj["VFI_Amount"]) / 100, 2);
-		auth_obj.reference_no = auth_obj["VFI_RetRefNo"]; // either VFI_RetRefNo or VFI_RespCode
+
+		auth_obj.reference_no = cstr(auth_obj["VFI_RetRefNo"]);
+		auth_obj.reference_no = auth_obj.reference_no.replace(/^0+/, '');
+
 		auth_obj.mode_of_payment = frappe.boot.magnati_card_mop;
 
 		let card_scheme = cstr(auth_obj["VFI_CardSchemeName"]).toLowerCase();
