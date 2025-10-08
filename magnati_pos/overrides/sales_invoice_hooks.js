@@ -30,7 +30,7 @@ frappe.ui.form.on("Sales Invoice", {
 			frappe.throw(__("Sales Invoice must be in draft for Magnati POS Payment"));
 		}
 		if (frm.doc.currency != "AED") {
-			frappe.throw(_("Only AED currency is allowed for Magnati POS Payments"));
+			frappe.throw(__("Only AED currency is allowed for Magnati POS Payments"));
 		}
 
 		let entered_amount;
@@ -39,7 +39,9 @@ frappe.ui.form.on("Sales Invoice", {
 			entered_amount = flt(reference_row.amount);
 		}
 
-		let auth_obj = await magnati_pos.request_card_payment(frm, entered_amount);
+		let outstanding_amount = flt(frm.doc.outstanding_amount);
+
+		let auth_obj = await magnati_pos.request_card_payment(frm, entered_amount || outstanding_amount);
 
 		let row = frm.events.get_magnati_payment_row(frm, auth_obj.mode_of_payment);
 		if (!row) {

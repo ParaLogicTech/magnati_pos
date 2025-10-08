@@ -23,7 +23,7 @@ frappe.ui.form.on("Payment Entry", {
 			frappe.throw(__("Payment Entry must be in draft for Magnati POS Payment"));
 		}
 		if (frm.doc.paid_to_account_currency && frm.doc.paid_to_account_currency != "AED") {
-			frappe.throw(_("Only AED currency is allowed for Magnati POS Payments"));
+			frappe.throw(__("Only AED currency is allowed for Magnati POS Payments"));
 		}
 
 		let auth_obj = await magnati_pos.request_card_payment(frm, frm.doc.paid_amount_after_tax);
