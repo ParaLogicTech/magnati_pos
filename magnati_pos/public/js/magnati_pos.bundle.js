@@ -85,9 +85,10 @@ $.extend(magnati_pos, {
 				dialog.get_close_btn().hide();
 
 				return magnati_pos.initiate_card_payment(
+					flt(values.amount),
 					values.terminal_id,
+					frm.doc.doctype,
 					frm.doc.name,
-					flt(values.amount)
 				).then((auth_obj) => {
 					resolve(auth_obj);
 				}).catch((e) => {
@@ -101,7 +102,7 @@ $.extend(magnati_pos, {
 		});
 	},
 
-	async initiate_card_payment(terminal_id, document_no, amount) {
+	async initiate_card_payment(amount, terminal_id, document_type, document_no) {
 		magnati_pos.check_magnati_pos_enabled();
 
 		amount = flt(amount, 2);
@@ -111,8 +112,8 @@ $.extend(magnati_pos, {
 		if (!terminal_id) {
 			throw new Error(__("Terminal ID not provided"));
 		}
-		if (!document_no) {
-			throw new Error(__("Document No not provided"));
+		if (!document_no || !document_type) {
+			throw new Error(__("Document not provided"));
 		}
 
 		const headers = new Headers();
@@ -138,7 +139,7 @@ $.extend(magnati_pos, {
 			let url = magnati_pos.get_ecr_web_service_url();
 			let response = await fetch(url, request_options);
 			if (!response.ok) {
-				throw new Error(`HTTP error code: ${response.status}`);
+				throw new Error(`HTTP Error (${response.status}): ${response.response.statusText || ""}`);
 			}
 			message = await response.text();
 		} catch (error) {
@@ -159,12 +160,31 @@ $.extend(magnati_pos, {
 				indicator: 'green'
 			});
 
+			magnati_pos.log_request(
+				payload,
+				message,
+				document_type,
+				document_no,
+				auth_obj,
+				null,
+			);
+
 			return auth_obj;
 		} catch (error) {
 			frappe.msgprint({
 				message: __(error.message || "An unknown error occured while communicating with the Magnati POS Device"),
 				indicator: "red"
 			});
+
+			magnati_pos.log_request(
+				payload,
+				message,
+				document_type,
+				document_no,
+				null,
+				error.message || "Unknown Error",
+			);
+
 			throw error;
 		}
 	},
@@ -229,6 +249,20 @@ $.extend(magnati_pos, {
 			obj[c.tagName] = c.textContent;
 		}
 		return obj;
+	},
+
+	log_request(request, response, document_type, document_no, auth_obj, error) {
+		return frappe.call({
+			method: "magnati_pos.logging.log_request",
+			args: {
+				data: request,
+				output: response,
+				request_id: auth_obj ? auth_obj["VFI_RetRefNo"] : null,
+				reference_doctype: document_type,
+				reference_name: document_no,
+				error: error,
+			},
+		});
 	},
 
 	check_in_request() {
