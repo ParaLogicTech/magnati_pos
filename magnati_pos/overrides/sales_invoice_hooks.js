@@ -12,6 +12,10 @@ frappe.ui.form.on("Sales Invoice", {
 	},
 
 	setup_magnati_pos_button(frm) {
+		if (!frappe.boot.magnati_pos_enabled) {
+			return;
+		}
+
 		if (frm.doc.docstatus == 0 && frm.doc.is_pos && !frm.doc.is_return) {
 			frm.add_custom_button(__("Magnati POS Payment"), () => frm.events.request_magnati_pos_payment(frm));
 		} else {

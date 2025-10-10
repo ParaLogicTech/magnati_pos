@@ -8,6 +8,10 @@ frappe.ui.form.on("Payment Entry", {
 	},
 
 	setup_magnati_pos_button(frm) {
+		if (!frappe.boot.magnati_pos_enabled) {
+			return;
+		}
+
 		if (frm.doc.docstatus == 0 && frm.doc.payment_type == "Receive") {
 			frm.add_custom_button(__("Magnati POS Payment"), () => frm.events.request_magnati_pos_payment(frm));
 		} else {
@@ -26,7 +30,12 @@ frappe.ui.form.on("Payment Entry", {
 			frappe.throw(__("Only AED currency is allowed for Magnati POS Payments"));
 		}
 
-		let auth_obj = await magnati_pos.request_card_payment(frm, frm.doc.paid_amount_after_tax);
+		let entered_amount;
+		if (!frm.doc.reference_no) {
+			entered_amount = flt(frm.doc.paid_amount_after_tax);
+		}
+
+		let auth_obj = await magnati_pos.request_card_payment(frm, entered_amount);
 		frm.set_value("mode_of_payment", auth_obj.mode_of_payment);
 		frm.set_value("paid_amount", auth_obj.amount);
 		frm.set_value("reference_no", auth_obj.reference_no);
