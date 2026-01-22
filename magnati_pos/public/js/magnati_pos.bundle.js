@@ -221,8 +221,8 @@ $.extend(magnati_pos, {
 
 		auth_obj.amount = flt(flt(auth_obj["VFI_Amount"]) / 100, 2);
 
-		auth_obj.reference_no = cstr(auth_obj["VFI_RetRefNo"]);
-		auth_obj.reference_no = auth_obj.reference_no.replace(/^0+/, '');
+		auth_obj.reference_no = cstr(auth_obj["VFI_ApprovalCode"]);
+		// auth_obj.reference_no = auth_obj.reference_no.replace(/^0+/, '');
 
 		auth_obj.mode_of_payment = frappe.boot.magnati_card_mop;
 
@@ -260,7 +260,7 @@ $.extend(magnati_pos, {
 			args: {
 				data: request,
 				output: response,
-				request_id: auth_obj ? auth_obj["VFI_RetRefNo"] : null,
+				request_id: auth_obj ? auth_obj["VFI_ApprovalCode"] : null,
 				reference_doctype: document_type,
 				reference_name: document_no,
 				error: error,
