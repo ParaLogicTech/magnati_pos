@@ -324,6 +324,7 @@ $.extend(magnati_pos, {
 				fieldtype: "Table",
 				fields: table_fields,
 				data: doc.pos_terminals,
+				in_place_edit: true,
 			},
 		];
 
